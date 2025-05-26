@@ -4,260 +4,281 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Researcher Rate Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background: #f5f5f5;
-        }
-        .calculator {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #2c3e50;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 10px;
-        }
-        h2 {
-            color: #34495e;
-            margin-top: 30px;
-        }
-        .input-group {
-            margin: 20px 0;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 5px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #555;
-        }
-        input, select {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-        .result {
-            background: #e8f5e9;
-            padding: 20px;
-            border-radius: 5px;
-            margin: 20px 0;
-            font-size: 18px;
-        }
-        .warning {
-            background: #fff3cd;
-            padding: 15px;
-            border-radius: 5px;
-            margin: 15px 0;
-            border-left: 4px solid #ffc107;
-        }
-        .insight {
-            background: #e3f2fd;
-            padding: 15px;
-            border-radius: 5px;
-            margin: 15px 0;
-            border-left: 4px solid #2196f3;
-        }
-        button {
-            background: #3498db;
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
+        /* Custom styles for range input track/thumb */
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #3b82f6; /* blue-500 */
             cursor: pointer;
-            margin-top: 20px;
+            border-radius: 50%;
         }
-        button:hover {
-            background: #2980b9;
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #3b82f6; /* blue-500 */
+            cursor: pointer;
+            border-radius: 50%;
+            border: none;
         }
-        .script {
-            background: #f5f5f5;
-            padding: 20px;
-            border-radius: 5px;
-            margin: 20px 0;
-            white-space: pre-wrap;
-            font-family: 'Courier New', monospace;
+        /* Basic styling for checkbox alignment with labels */
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem; /* Tailwind: mb-2 */
         }
-        .hidden {
-            display: none;
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 0.5rem; /* Tailwind: mr-2 */
+            width: auto; /* Override Tailwind's default full-width for inputs */
+            height: 1rem; /* Tailwind: h-4 */
+            width: 1rem; /* Tailwind: w-4 */
         }
     </style>
 </head>
-<body>
-    <div class="calculator">
-        <h1>The Researcher's Rate Calculator</h1>
-        <p><em>Stop undercharging. Start valuing your insight.</em></p>
+<body class="bg-slate-100 font-sans text-slate-800">
+    <div class="container mx-auto max-w-3xl p-4 md:p-8">
+        <div class="calculator bg-white p-6 md:p-10 rounded-xl shadow-2xl">
+            <header class="mb-8 text-center">
+                <h1 class="text-3xl md:text-4xl font-bold text-blue-600 mb-2">The Researcher's Rate Calculator</h1>
+                <p class="text-slate-600 italic text-lg">Stop undercharging. Start valuing your insight.</p>
+            </header>
 
-        <h2>Step 1: Your Knowledge Multipliers</h2>
-        
-        <div class="input-group">
-            <label>Years studying/researching your domain:</label>
-            <select id="years">
-                <option value="3">1-3 years</option>
-                <option value="5">4-7 years</option>
-                <option value="8">8-10 years</option>
-                <option value="12">10+ years</option>
-            </select>
+            <section class="mb-8">
+                <h2 class="text-2xl font-semibold text-slate-700 mb-3 border-b-2 border-blue-500 pb-2">Step 1: Your Knowledge Multipliers</h2>
+                <div class="input-group bg-slate-50 p-5 rounded-lg shadow mb-6">
+                    <label for="years" class="block mb-2 font-medium text-slate-700">Years studying/researching your domain:</label>
+                    <select id="years" class="w-full p-3 border border-slate-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base">
+                        <option value="3">1-3 years (Emerging Expert)</option>
+                        <option value="5">4-7 years (Established Expert)</option>
+                        <option value="8">8-10 years (Seasoned Specialist)</option>
+                        <option value="12">10+ years (Leading Authority)</option>
+                    </select>
+                </div>
+
+                <div class="input-group bg-slate-50 p-5 rounded-lg shadow checkbox-group">
+                    <label class="block mb-3 font-medium text-slate-700">Unique perspective factors (check all that apply):</label>
+                    <label><input type="checkbox" id="cross-domain" value="20" class="form-checkbox h-5 w-5 text-blue-600 rounded focus:ring-blue-500"> Cross-domain expertise (e.g., AI + Education)</label>
+                    <label><input type="checkbox" id="lived-experience" value="25" class="form-checkbox h-5 w-5 text-blue-600 rounded focus:ring-blue-500"> Relevant lived experience (e.g., military, international)</label>
+                    <label><input type="checkbox" id="contrarian" value="15" class="form-checkbox h-5 w-5 text-blue-600 rounded focus:ring-blue-500"> Contrarian insights that challenge conventional wisdom</label>
+                    <label><input type="checkbox" id="practical" value="20" class="form-checkbox h-5 w-5 text-blue-600 rounded focus:ring-blue-500"> Translated academic concepts to real-world applications</label>
+                </div>
+            </section>
+
+            <section class="mb-8">
+                <h2 class="text-2xl font-semibold text-slate-700 mb-3 border-b-2 border-blue-500 pb-2">Step 2: Market Comparisons</h2>
+                <div class="input-group bg-slate-50 p-5 rounded-lg shadow mb-6">
+                    <label for="mckinsey" class="block mb-2 font-medium text-slate-700">What does a typical Management Consultant charge per hour?</label>
+                    <input type="number" id="mckinsey" value="500" min="200" max="1500" step="25" class="w-full p-3 border border-slate-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base">
+                    <small class="block mt-1 text-sm text-slate-500">Range: $200-$1500/hr. They often have general business expertise. You bring specialized depth.</small>
+                </div>
+
+                <div class="input-group bg-slate-50 p-5 rounded-lg shadow">
+                    <label for="trainer" class="block mb-2 font-medium text-slate-700">What does a corporate trainer charge for similar content delivery?</label>
+                    <input type="number" id="trainer" value="175" min="75" max="500" step="25" class="w-full p-3 border border-slate-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base">
+                    <small class="block mt-1 text-sm text-slate-500">Range: $75-$500/hr. Often for surface-level training.</small>
+                </div>
+            </section>
+
+            <section class="mb-8">
+                <h2 class="text-2xl font-semibold text-slate-700 mb-3 border-b-2 border-blue-500 pb-2">Step 3: Value Creation Factors</h2>
+                <div class="input-group bg-slate-50 p-5 rounded-lg shadow mb-6">
+                    <label for="audience-cost" class="block mb-2 font-medium text-slate-700">Average hourly cost of your client's team attending your lecture/session:</label>
+                    <input type="number" id="audience-cost" value="200" min="50" max="2000" step="50" class="w-full p-3 border border-slate-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base">
+                    <small class="block mt-1 text-sm text-slate-500">E.g., 10 people × $50/hour average salary/cost = $500/hour in room.</small>
+                </div>
+
+                <div class="input-group bg-slate-50 p-5 rounded-lg shadow">
+                    <label for="severity" class="block mb-2 font-medium text-slate-700">Problem severity you're addressing (1-10):</label>
+                    <input type="range" id="severity" min="1" max="10" value="7" class="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+                    <div class="text-center mt-2">
+                        <span id="severity-display" class="text-blue-600 font-semibold text-lg">7</span>
+                    </div>
+                    <small class="block mt-1 text-sm text-slate-500 text-center">1 = Nice to know, 10 = Existential threat / Major opportunity</small>
+                </div>
+            </section>
+
+            <div class="text-center mt-10">
+                <button onclick="calculateRate()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-10 rounded-lg text-lg shadow-md hover:shadow-lg transition duration-150 ease-in-out transform hover:scale-105">
+                    Calculate My Rate
+                </button>
+            </div>
+
+            <div id="results" class="hidden mt-12">
+                <h2 class="text-2xl font-semibold text-slate-700 mb-4 text-center">Your Justified Rate Range</h2>
+                <div id="rate-range" class="result bg-green-50 border-l-4 border-green-500 text-green-700 p-6 rounded-lg shadow-md mb-6 text-center text-xl md:text-2xl">
+                    </div>
+                
+                <div id="key-insight" class="insight bg-sky-50 border-l-4 border-sky-500 text-sky-700 p-5 rounded-lg shadow-md mb-6 text-base">
+                    </div>
+                
+                <div id="warning" class="warning bg-amber-50 border-l-4 border-amber-500 text-amber-700 p-5 rounded-lg shadow-md mb-6 text-base">
+                    </div>
+
+                <h2 class="text-2xl font-semibold text-slate-700 mb-3 mt-8">Your Rate Justification Script</h2>
+                <div id="script" class="script bg-slate-100 p-5 rounded-lg shadow-md text-slate-700 whitespace-pre-wrap font-mono text-sm leading-relaxed">
+                    </div>
+            </div>
         </div>
-
-        <div class="input-group">
-            <label>Unique perspective factors (check all that apply):</label>
-            <input type="checkbox" id="cross-domain" value="20"> Cross-domain expertise (e.g., AI + Education)<br>
-            <input type="checkbox" id="lived-experience" value="25"> Relevant lived experience (e.g., military, international)<br>
-            <input type="checkbox" id="contrarian" value="15"> Contrarian insights that challenge conventional wisdom<br>
-            <input type="checkbox" id="practical" value="20"> Translated academic concepts to real-world applications
-        </div>
-
-        <h2>Step 2: Market Comparisons</h2>
-        
-        <div class="input-group">
-            <label>What does a McKinsey consultant charge per hour?(Research what the current rates are in the field of your niche)</label>
-            <input type="number" id="mckinsey" value="500" min="300" max="800">
-            <small>Typically $300-800/hour. They have MBAs. You have depth.</small>
-        </div>
-
-        <div class="input-group">
-            <label>What does a corporate trainer charge for similar content?</label>
-            <input type="number" id="trainer" value="175" min="100" max="300">
-            <small>Most charge $150-250/hour for surface-level training.</small>
-        </div>
-
-        <h2>Step 3: Value Creation Factors</h2>
-        
-        <div class="input-group">
-            <label>Average hourly cost of your client's team attending your lecture/session:</label>
-            <input type="number" id="audience-cost" value="200" min="100" max="1000">
-            <small>10 people × $50/hour average = $500/hour in room</small>
-        </div>
-
-        <div class="input-group">
-            <label>Problem severity you're addressing (1-10):</label>
-            <input type="range" id="severity" min="1" max="10" value="7">
-            <span id="severity-display">7</span>
-            <small>1 = Nice to know, 10 = Existential threat to their business</small>
-        </div>
-
-        <button onclick="calculateRate()">Calculate My Rate</button>
-
-        <div id="results" class="hidden">
-            <h2>Your Justified Rate Range</h2>
-            <div class="result" id="rate-range"></div>
-            
-            <div class="insight" id="key-insight"></div>
-            
-            <div class="warning" id="warning"></div>
-
-            <h2>Your Rate Justification Script</h2>
-            <div class="script" id="script"></div>
-        </div>
+        <footer class="text-center mt-12 pb-8">
+            <p class="text-sm text-slate-500">&copy; 2024 Researcher Rate Calculator. Empowering your expertise.</p>
+        </footer>
     </div>
 
     <script>
+        // Update severity display when range slider changes
         document.getElementById('severity').addEventListener('input', function(e) {
             document.getElementById('severity-display').textContent = e.target.value;
         });
 
         function calculateRate() {
-            // Get base multipliers
-            const years = parseInt(document.getElementById('years').value);
-            const mckinsey = parseInt(document.getElementById('mckinsey').value);
-            const trainer = parseInt(document.getElementById('trainer').value);
-            const audienceCost = parseInt(document.getElementById('audience-cost').value);
-            const severity = parseInt(document.getElementById('severity').value);
-            
-            // Get perspective bonuses
-            let perspectiveBonus = 0;
+            // --- 1. Input Gathering ---
+            const yearsCategoryValue = parseInt(document.getElementById('years').value);
+            const mckinseyRate = parseInt(document.getElementById('mckinsey').value) || 500; 
+            const trainerRate = parseInt(document.getElementById('trainer').value) || 175; 
+            const audienceCost = parseInt(document.getElementById('audience-cost').value) || 200; 
+            const severityScore = parseInt(document.getElementById('severity').value);
+
+            let perspectiveBonusPoints = 0;
             const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-            checkboxes.forEach(cb => perspectiveBonus += parseInt(cb.value));
+            checkboxes.forEach(cb => perspectiveBonusPoints += parseInt(cb.value));
+
+            // --- 2. Define Multipliers/Factors ---
+            let experienceFactor;
+            switch (yearsCategoryValue) {
+                case 3:  experienceFactor = 1.0; break;  
+                case 5:  experienceFactor = 1.20; break; 
+                case 8:  experienceFactor = 1.40; break; 
+                case 12: experienceFactor = 1.65; break; 
+                default: experienceFactor = 1.0;
+            }
+
+            const perspectiveFactor = 1 + (perspectiveBonusPoints / 125); 
+            const severityFactor = 0.85 + (severityScore * 0.065);
+
+            // --- 3. Core Rate Calculation ---
+            let calculatedRate = trainerRate * experienceFactor * perspectiveFactor * severityFactor;
             
-            // Calculate base rate
-            let baseRate = trainer * 0.8; // Start slightly below corporate trainer
-            
-            // Apply multipliers
-            baseRate *= (1 + (years / 20)); // Years boost
-            baseRate *= (1 + (perspectiveBonus / 100)); // Unique perspective boost
-            baseRate *= (1 + ((severity - 5) / 10)); // Problem severity adjustment
-            
-            // Set floor and ceiling
-            const minRate = Math.max(150, trainer * 0.75);
-            const maxRate = Math.min(mckinsey * 0.6, 400);
-            
-            const recommendedRate = Math.round(Math.min(Math.max(baseRate, minRate), maxRate) / 25) * 25;
-            const lowRate = Math.round(recommendedRate * 0.8 / 25) * 25;
-            const highRate = Math.round(recommendedRate * 1.2 / 25) * 25;
-            
-            // Generate insights
-            let insight = "";
-            if (recommendedRate > trainer) {
-                insight = `You should charge MORE than corporate trainers because you bring ${years}+ years of deep expertise`;
-                if (perspectiveBonus > 30) {
-                    insight += " and unique perspectives they can't match.";
-                }
+            // --- 4. Apply Market-Driven Boundaries and Adjustments ---
+            let rateAfterBoundaries = Math.max(calculatedRate, trainerRate * 0.90); 
+            rateAfterBoundaries = Math.min(rateAfterBoundaries, mckinseyRate * 0.90); 
+            rateAfterBoundaries = Math.max(rateAfterBoundaries, 125); 
+
+            // --- 5. Final Rate and Range ---
+            const recommendedHourlyRate = Math.round(rateAfterBoundaries / 25) * 25;
+            const lowerBoundRate = Math.round(recommendedHourlyRate * 0.80 / 25) * 25;
+            const upperBoundRate = Math.round(recommendedHourlyRate * 1.20 / 25) * 25;
+
+            // --- 6. Generate Insights and Warnings ---
+            let insightMessage = "";
+            const yearsSelectElement = document.getElementById('years');
+            let yearsText = yearsSelectElement.options[yearsSelectElement.selectedIndex].text.split('(')[0].trim();
+
+
+            if (recommendedHourlyRate > trainerRate * 1.25) {
+                insightMessage += `Your expertise (${yearsText}) and unique perspectives justify a rate significantly above standard corporate trainers. `;
+            } else {
+                insightMessage += `With ${yearsText} of experience, your insights are valuable. `;
+            }
+
+            if (perspectiveFactor > 1.3) { 
+                insightMessage += "Your combined unique perspectives add considerable value. ";
             }
             
-            if (audienceCost > recommendedRate * 2) {
-                insight += ` Consider this: Your clients spend $${audienceCost}/hour just having their team in the room. Your fee is a fraction of their investment.`;
+            if (severityFactor > 1.3) { 
+                insightMessage += `You're addressing critical problems (severity ${severityScore}/10), which commands a premium. `;
             }
-            
-            // Generate warning if undercharging
-            let warning = "";
-            if (recommendedRate < 200) {
-                warning = "Warning: You're likely undervaluing expertise that took years to build. Most PhD researchers should charge $200+ for specialized knowledge.";
+
+            if (audienceCost > recommendedHourlyRate && recommendedHourlyRate > 0) {
+                 insightMessage += `Remember, the cost for your client's team to simply attend is ~$${audienceCost}/hour. Your fee is an investment in high-value knowledge transfer.`;
+            } else if (recommendedHourlyRate > 0) {
+                 insightMessage += `Your fee is an investment in focused expertise that can save your clients significant time and resources.`;
             }
-            
-            // Generate script
-            const script = generateScript(recommendedRate, years, severity, perspectiveBonus);
-            
-            // Display results
+
+
+            let warningMessage = "";
+            if (recommendedHourlyRate < 225 && yearsCategoryValue >= 5) { 
+                warningMessage = `Consider if this rate truly reflects ${yearsText} of specialized knowledge. Experts in demanding fields often charge $250-$400+ per hour. Don't undervalue deep expertise.`;
+            } else if (recommendedHourlyRate < 175) {
+                 warningMessage = "While this is a starting point, ensure this rate adequately compensates for your preparation and expertise. As you gain traction, aim higher.";
+            }
+
+
+            // --- 7. Display Results ---
             document.getElementById('rate-range').innerHTML = `
-                <strong>Your Rate Range: $${lowRate} - $${highRate}/hour</strong><br>
-                <strong>Recommended Starting Rate: $${recommendedRate}/hour</strong>
+                <p class="font-semibold">Your Justified Hourly Rate Range:</p>
+                <strong class="block text-3xl md:text-4xl my-2">$${lowerBoundRate} - $${upperBoundRate}</strong>
+                <p class="font-semibold mt-2">Recommended Starting Rate:</p>
+                <strong class="block text-green-600 text-4xl md:text-5xl my-2">$${recommendedHourlyRate}</strong>
             `;
             
-            document.getElementById('key-insight').textContent = insight;
-            document.getElementById('warning').textContent = warning;
-            document.getElementById('script').textContent = script;
+            document.getElementById('key-insight').innerHTML = insightMessage || "Factor in your unique value and the problems you solve for clients.";
             
-            document.getElementById('results').classList.remove('hidden');
-            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+            const warningElement = document.getElementById('warning');
+            if (warningMessage) {
+                warningElement.innerHTML = warningMessage;
+                warningElement.classList.remove('hidden');
+            } else {
+                warningElement.classList.add('hidden');
+            }
+            
+            // Pass the original yearsCategoryValue to generateScript for more nuanced text
+            document.getElementById('script').textContent = generateScript(recommendedHourlyRate, yearsCategoryValue, severityScore, mckinseyRate);
+            
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.classList.remove('hidden');
+            resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
         
-        function generateScript(rate, years, severity, perspective) {
-            let script = `"My rate is $${rate} per hour.
+        function generateScript(rate, yearsValue, severity, mckinseyRate) {
+            let yearsNarrative;
+            switch (yearsValue) {
+                case 3: yearsNarrative = "the last few years"; break;
+                case 5: yearsNarrative = "several years"; break;
+                case 8: yearsNarrative = "many years"; break;
+                case 12: yearsNarrative = "over a decade"; break;
+                default: yearsNarrative = "significant time";
+            }
 
-Here's why that's a valuable investment for you:`;
-            
-            if (years >= 8) {
-                script += `\n\nI bring ${years}+ years of focused research in this domain - deeper expertise than most consultants who rotate through industries every 2-3 years.`;
+            let perceivedSeverity = severity;
+            if (severity >= 7 && severity < 10) {
+                perceivedSeverity = severity + 1;
+            } else if (severity < 7 && severity > 0) {
+                 perceivedSeverity = severity + (Math.random() < 0.5 ? 1 : 0); // Add a bit more variability for lower severities
             }
-            
-            if (severity >= 7) {
-                script += `\n\nThe challenge you're facing is critical to your organization's future. You need someone who truly understands the complexity, not someone reading from slides.`;
-            }
-            
-            if (perspective > 30) {
-                script += `\n\nMy perspective is unique - I don't just understand the theory, I've lived through parallel challenges and can bridge worlds most consultants can't.`;
-            }
-            
-            script += `\n\nTo put this in context: You're investing less than what you'd pay a mid-level consultant, but getting insights from someone who's spent years thinking deeply about exactly your challenge.
+             perceivedSeverity = Math.min(10, perceivedSeverity);
 
-Would you like to discuss the specific outcomes I can deliver?"`;
+
+            let script = `"My rate is $${rate} an hour.\n\n`;
+            script += `I know that might sound notable, so let's talk about what you're actually investing in.\n\n`;
+            script += `I've spent ${yearsNarrative} deep in this specific problem. Not just consulting on it – but researching it, living it, and breaking it apart to understand why smart organizations like yours sometimes hit roadblocks.\n\n`;
+            script += `Most consultants likely encountered this challenge recently. I've been mapping its edges and intricacies since before it was a common talking point.\n\n`;
+            
+            script += `You've marked this as a ${severity}/10 priority. In my experience, when a challenge is this significant, it often feels more like a ${perceivedSeverity}/10 once you're in the thick of it – organizations naturally tend to underestimate what they don't yet fully grasp.\n\n`;
+            
+            script += `Here’s a point of comparison: A large consultancy might assign a team, with blended rates around $${mckinseyRate}/hour or more, often staffed by individuals who learned about this from a briefing deck. With me, you get one dedicated expert who has been immersed in this specific area for ${yearsNarrative}.\n\n`;
+            
+            script += `I don't sell generic frameworks. I deliver clarity and tailored strategies.\n\n`;
+            script += `The critical question isn't just about the hourly rate, but: What is the true cost of *not* getting this right the first time? What's the value of achieving a clear path forward, efficiently?\n\n`;
+            script += `So, let's discuss that. What does success for this project look like to you?"`;
             
             return script;
         }
+
     </script>
-</div>
 </body>
 </html>
